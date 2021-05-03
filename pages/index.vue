@@ -39,6 +39,11 @@ if (process.browser) {
   netlifyIdentity.init({
     APIUrl: "https://relaxed-lamport-ca12e6.netlify.app/.netlify/identity"
   })
+  // const user = netlifyIdentity.currentUser()
+  // if (user) {
+  //   console.log(`user detected:`)
+  //   // this.$auth.setUser(user)
+  // }
 }
 
 export default {
@@ -57,6 +62,17 @@ export default {
           .then(() => netlifyIdentity.logout())
       }
     }
+  },
+  mounted() {
+    netlifyIdentity.on('init', user => {
+      if (user) {
+        console.log('user detected:')
+        netlifyIdentity.refresh()
+        // this.$auth.setUser(user)
+      }
+    })
+    netlifyIdentity.on('login', user => console.log('login', user))
+    // console.log('mounted!')
   }
 }
 </script>
