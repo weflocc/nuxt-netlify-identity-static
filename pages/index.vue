@@ -47,20 +47,16 @@ export default {
       if (action == "login" || action == "signup") {
         netlifyIdentity.open(action)
         netlifyIdentity.on(action, user => {
+          console.log('action below:')
+          console.log(action)
           this.$auth.setUserToken(user.token.access_token, user.token.refresh_token)
             .then(() => netlifyIdentity.close())
-          // this.$auth.setUser(user)
-          // netlifyIdentity.close()
         })
       } else if (action == "logout") {
         this.$auth.logout()
           .then(() => netlifyIdentity.logout())
       }
     }
-  },
-  mounted: function() {
-    console.log(`mounted!`)
-    console.log(this.$auth.user) // null
   }
 }
 </script>
