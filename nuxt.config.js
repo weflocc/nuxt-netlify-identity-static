@@ -31,12 +31,37 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-      'nuxt-windicss',
+    'nuxt-windicss',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
+  auth: {
+    redirect: {
+      login: '/',
+    },
+    strategies: {
+      local: {
+        token: {
+          property: 'token',
+          // required: true,
+          // type: 'Bearer'
+        },
+        user: {
+          property: 'user',
+          // autoFetch: true
+        },
+        endpoints: {
+          login: false,
+          logout: false,
+          user: false
+        }
+      }
+    }
+  },  
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
