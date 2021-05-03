@@ -6,28 +6,23 @@
         nuxt-identity
       </h1>
       <div class="links">
-        <!-- <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a> -->
         <button
           v-if="!$auth.loggedIn"
           @click="triggerNetlifyIdentityAction('login')"
-          target="_blank"
-          rel="noopener noreferrer"
           class="button--green"
         >
           Log In
         </button>
+        <button
+          v-if="$auth.loggedIn"
+          @click="triggerNetlifyIdentityAction('logout')"
+          class="button--green"
+        >
+          Log Out
+        </button>
         <nuxt-link
           v-if="$auth.loggedIn"
           to="/protected"
-          target="_blank"
-          rel="noopener noreferrer"
           class="button--grey"
         >
           Protected Page
@@ -47,34 +42,17 @@ if (process.browser) {
 }
 
 export default {
-  data: () => ({
-
-  }),
   methods: {
-    triggerNetlifyIdentityAction(action) {
+    async triggerNetlifyIdentityAction(action) {
       if (action == "login" || action == "signup") {
-        netlifyIdentity.open(action);
+        netlifyIdentity.open(action)
         netlifyIdentity.on(action, user => {
-          // this.currentUser = {
-          //   username: user.user_metadata.full_name,
-          //   email: user.email,
-          //   access_token: user.token.access_token,
-          //   expires_at: user.token.expires_at,
-          //   refresh_token: user.token.refresh_token,
-          //   token_type: user.token.token_type
-          // };
-          // this.updateUser({
-          //   currentUser: this.currentUser
-          // });
-          netlifyIdentity.close();
+          this.$auth.setUserToken(user.token.access_token, user.token.refresh_token)
+            .then(() => netlifyIdentity.close())
         });
       } else if (action == "logout") {
-        // this.currentUser = null;
-        // this.updateUser({
-        //   currentUser: this.currentUser
-        // });
-        // netlifyIdentity.logout();
-        // this.$router.push({ name: "Home" });
+        this.$auth.logout()
+          .then(() => netlifyIdentity.logout())
       }
     }
   }

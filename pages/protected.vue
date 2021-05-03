@@ -6,14 +6,13 @@
         Protected Page
       </h1>
       <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          v-if="$auth.loggedIn"
+          @click="triggerNetlifyIdentityAction('logout')"
           class="button--green"
         >
-          Logout
-        </a>
+          Log Out
+        </button>
       </div>
     </div>
   </div>
@@ -28,7 +27,15 @@ if (process.browser) {
   })
 }
 export default {
-  middleware: 'auth'
+  middleware: 'auth',
+  methods: {
+    async triggerNetlifyIdentityAction(action) {
+      if (action == "logout") {
+        this.$auth.logout()
+          .then(() => netlifyIdentity.logout())
+      }
+    }
+  }
 }
 </script>
 
