@@ -50,6 +50,7 @@ export default {
         },
         user: {
           property: 'user',
+          autoFetch: false
         },
         endpoints: {
           login: false,

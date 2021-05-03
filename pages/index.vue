@@ -7,21 +7,21 @@
       </h1>
       <div class="links">
         <button
-          v-if="!$auth.loggedIn"
+          v-show="!$auth.loggedIn"
           @click="triggerNetlifyIdentityAction('login')"
           class="button--green"
         >
           Log In
         </button>
         <button
-          v-if="$auth.loggedIn"
+          v-show="$auth.loggedIn"
           @click="triggerNetlifyIdentityAction('logout')"
           class="button--green"
         >
           Log Out
         </button>
         <nuxt-link
-          v-if="$auth.loggedIn"
+          v-show="$auth.loggedIn"
           to="/protected"
           class="button--grey"
         >
@@ -49,12 +49,18 @@ export default {
         netlifyIdentity.on(action, user => {
           this.$auth.setUserToken(user.token.access_token, user.token.refresh_token)
             .then(() => netlifyIdentity.close())
-        });
+          // this.$auth.setUser(user)
+          // netlifyIdentity.close()
+        })
       } else if (action == "logout") {
         this.$auth.logout()
           .then(() => netlifyIdentity.logout())
       }
     }
+  },
+  mounted: function() {
+    console.log(`mounted!`)
+    console.log(this.$auth.user) // null
   }
 }
 </script>

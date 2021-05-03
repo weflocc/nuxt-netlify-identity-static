@@ -7,7 +7,7 @@
       </h1>
       <div class="links">
         <button
-          v-if="$auth.loggedIn"
+          v-show="$auth.loggedIn"
           @click="triggerNetlifyIdentityAction('logout')"
           class="button--green"
         >
