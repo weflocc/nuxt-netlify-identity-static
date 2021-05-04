@@ -39,11 +39,6 @@ if (process.browser) {
   netlifyIdentity.init({
     APIUrl: "https://relaxed-lamport-ca12e6.netlify.app/.netlify/identity"
   })
-  // const user = netlifyIdentity.currentUser()
-  // if (user) {
-  //   console.log(`user detected:`)
-  //   // this.$auth.setUser(user)
-  // }
 }
 
 export default {
@@ -52,8 +47,6 @@ export default {
       if (action == "login" || action == "signup") {
         netlifyIdentity.open(action)
         netlifyIdentity.on(action, user => {
-          console.log('action below:')
-          console.log(action)
           this.$auth.setUserToken(user.token.access_token, user.token.refresh_token)
             .then(() => netlifyIdentity.close())
         })
@@ -62,54 +55,6 @@ export default {
           .then(() => netlifyIdentity.logout())
       }
     }
-  },
-  mounted() {
-    const user = netlifyIdentity.currentUser()
-    console.log('mounted user below:')
-    console.log(this.$auth.user)
-    if (user) {
-      console.log('user detected on currentUser')
-      if (!this.$auth.user) {
-        this.$auth.setUser(user)
-        console.log(this.$auth.user)
-      } else {
-        console.log(`this.$auth.user already found:`)
-        console.log(this.$auth.user)
-      }
-    } else {
-      console.log('user not detected on currentUser')
-    }
-    netlifyIdentity.on('init', user => {
-      console.log('init:')
-      if (user) {
-        console.log('user detected on init')
-        if (!this.auth.user) {
-          this.$auth.setUser(user)
-        } else {
-          console.log(`this.$auth.user already found:`)
-          console.log(this.$auth.user)
-        }
-        this.$auth.setUser(user)
-      } else {
-        console.log('no user detected on init')
-      }
-    })
-    netlifyIdentity.on('login', user => {
-      console.log('login:')
-      if (user) {
-        console.log('user detected on login')
-        if (!this.auth.user) {
-          this.$auth.setUser(user)
-        } else {
-          console.log(`this.$auth.user already found:`)
-          console.log(this.$auth.user)
-        }
-        this.$auth.setUser(user)
-      } else {
-        console.log('no user detected on login')
-      }
-    })
-    // console.log('mounted!')
   }
 }
 </script>
