@@ -94,6 +94,21 @@ export default {
         console.log('no user detected on init')
       }
     })
+    netlifyIdentity.on('login', user => {
+      console.log('login:')
+      if (user) {
+        console.log('user detected on login')
+        if (!this.auth.user) {
+          this.$auth.setUser(user)
+        } else {
+          console.log(`this.$auth.user already found:`)
+          console.log(this.$auth.user)
+        }
+        this.$auth.setUser(user)
+      } else {
+        console.log('no user detected on login')
+      }
+    })
     // console.log('mounted!')
   }
 }
