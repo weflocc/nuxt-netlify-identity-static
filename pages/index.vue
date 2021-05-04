@@ -64,14 +64,36 @@ export default {
     }
   },
   mounted() {
+    const user = netlifyIdentity.currentUser()
+    console.log('mounted user below:')
+    console.log(this.$auth.user)
+    if (user) {
+      console.log('user detected on currentUser')
+      if (!this.$auth.user) {
+        this.$auth.setUser(user)
+        console.log(this.$auth.user)
+      } else {
+        console.log(`this.$auth.user already found:`)
+        console.log(this.$auth.user)
+      }
+    } else {
+      console.log('user not detected on currentUser')
+    }
     netlifyIdentity.on('init', user => {
+      console.log('init:')
       if (user) {
-        console.log('user detected:')
-        netlifyIdentity.refresh()
-        // this.$auth.setUser(user)
+        console.log('user detected on init')
+        if (!this.auth.user) {
+          this.$auth.setUser(user)
+        } else {
+          console.log(`this.$auth.user already found:`)
+          console.log(this.$auth.user)
+        }
+        this.$auth.setUser(user)
+      } else {
+        console.log('no user detected on init')
       }
     })
-    netlifyIdentity.on('login', user => console.log('login', user))
     // console.log('mounted!')
   }
 }
