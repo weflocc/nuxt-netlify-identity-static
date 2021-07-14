@@ -23,7 +23,7 @@ import netlifyIdentity from "netlify-identity-widget"
 
 if (process.browser) {
   netlifyIdentity.init({
-    APIUrl: "https://relaxed-lamport-ca12e6.netlify.app/.netlify/identity"
+    APIUrl: "https://practical-dubinsky-16f36f.netlify.app/.netlify/identity"
   })
 }
 export default {
